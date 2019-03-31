@@ -1,5 +1,6 @@
 package com.poc.wallet.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poc.wallet.exception.PlatformException;
 import com.poc.wallet.model.ResponseData;
 import com.poc.wallet.model.TRANSACTION_TYPE;
+import com.poc.wallet.model.Passbook;
 import com.poc.wallet.model.db.Transaction;
 import com.poc.wallet.model.db.User;
 import com.poc.wallet.model.dto.TransactionDTO;
@@ -47,7 +49,7 @@ public class UserController {
 	
 	private Transaction processTransaction(TransactionDTO transactionDTO) throws PlatformException {
 		Transaction transaction = null;
-		if(transactionDTO.getType().equals(TRANSACTION_TYPE.ADDED) && transactionDTO.getPayingUser().equals(user.getEmail())) {
+		if(transactionDTO.getType().equals(TRANSACTION_TYPE.ADDED) && transactionDTO.getUser().equals(user.getEmail())) {
 			transaction = new Transaction();
 			User recievingUser = new User();
 			recievingUser.setEmail(user.getEmail());
@@ -56,13 +58,13 @@ public class UserController {
 			transaction.setType(transactionDTO.getType());
 			return transaction;
 		}
-		else if(transactionDTO.getType().equals(TRANSACTION_TYPE.TRANSFERED) && !transactionDTO.getPayingUser().equals(user.getEmail())) {
+		else if(transactionDTO.getType().equals(TRANSACTION_TYPE.TRANSFERED) && !transactionDTO.getUser().equals(user.getEmail())) {
 			transaction = new Transaction();
 			User payingUser = new User();
 			User recievingUser = new User();
 			
 			payingUser.setEmail(user.getEmail());
-			recievingUser.setEmail(transactionDTO.getPayingUser());
+			recievingUser.setEmail(transactionDTO.getUser());
 			
 			transaction.setPayingUser(payingUser);
 			transaction.setRecievingUser(recievingUser);
@@ -114,13 +116,13 @@ public class UserController {
 	}
 	
 	@GetMapping("/passbook")
-	public ResponseEntity<ResponseData<List<Transaction>>> getAllTransactions(HttpServletRequest request){
+	public ResponseEntity<ResponseData<List<Passbook>>> getAllTransactions(HttpServletRequest request){
 		preProcessRequest(request);
-		List<Transaction> transactions = transactionService.getPassbook(user);
-		ResponseData<List<Transaction>> response = new ResponseData<>();
-		response.setData(transactions);
+		List<Passbook> passbooks = transactionService.getPassbook(user);
+		ResponseData<List<Passbook>> response = new ResponseData<>();
+		response.setData(passbooks);
 		response.setMessage(Constants.SUCCESS);
-		return new ResponseEntity<ResponseData<List<Transaction>>>(response,HttpStatus.OK);
+		return new ResponseEntity<ResponseData<List<Passbook>>>(response,HttpStatus.OK);
 	}
 	
 }
