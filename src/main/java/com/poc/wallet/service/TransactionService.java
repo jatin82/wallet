@@ -1,6 +1,7 @@
 package com.poc.wallet.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,9 @@ public class TransactionService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 	
-	
 	@Transactional
 	@Rollback
-	public Transaction executeTransaction(Transaction transaction) throws PlatformException {
+	public synchronized Transaction executeTransaction(Transaction transaction) throws PlatformException {
 		if(transaction.getType().equals(TRANSACTION_TYPE.ADDED)) {
 			User recievingUser = userService.getUserByEmail(transaction.getRecievingUser().getEmail());
 
@@ -52,6 +52,7 @@ public class TransactionService {
 			
 				transaction.setRecievingUser(recievingUser);
 				transaction.setPayingUser(payingUser);
+				transaction.setTransactionDate(new Date());
 				
 				userService.updateUser(recievingUser);
 				userService.updateUser(payingUser);
@@ -65,7 +66,7 @@ public class TransactionService {
 
 	
 	public List<Passbook> getPassbook(User user){
-		List<Transaction> transactions = transactionRepository.findByRecievingUserOrPayingUser(user,user);
+		List<Transaction> transactions = transactionRepository.findByRecievingUserOrPayingUserOrderByTransactionDateAsc(user,user);
 		
 		List<Passbook> passbooks = new ArrayList<>();
 		transactions.forEach(t->{

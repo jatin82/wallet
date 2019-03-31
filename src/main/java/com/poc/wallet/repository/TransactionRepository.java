@@ -10,5 +10,5 @@ import com.poc.wallet.model.db.User;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
 	
-	public List<Transaction> findByRecievingUserOrPayingUser(User recievingUser,User payingUser);
+	public List<Transaction> findByRecievingUserOrPayingUserOrderByTransactionDateAsc(User recievingUser,User payingUser);
 }

@@ -1,5 +1,7 @@
 package com.poc.wallet.model.db;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,6 +38,8 @@ public class Transaction {
 	private User recievingUser;
 	
 	private long money;
+	
+	private Date transactionDate;
 	
 	@Column(nullable = true)
 	private long payingUserBalance;
@@ -99,4 +103,13 @@ public class Transaction {
 	public void setType(TRANSACTION_TYPE type) {
 		this.type = type;
 	}
+
+	public Date getTransactionDate() {
+		return transactionDate;
+	}
+
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
+	}
+	
 }
