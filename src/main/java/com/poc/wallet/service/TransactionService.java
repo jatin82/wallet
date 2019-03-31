@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.poc.wallet.exception.PlatformException;
@@ -27,7 +26,6 @@ public class TransactionService {
 	private TransactionRepository transactionRepository;
 	
 	@Transactional
-	@Rollback
 	public synchronized Transaction executeTransaction(Transaction transaction) throws PlatformException {
 		if(transaction.getType().equals(TRANSACTION_TYPE.ADDED)) {
 			User recievingUser = userService.getUserByEmail(transaction.getRecievingUser().getEmail());
