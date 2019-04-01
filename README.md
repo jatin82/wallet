@@ -2,9 +2,10 @@
 
 ### Requirement
 
-1.Require Mysql Ver 5.7.25
-2.Require JAVA 8 
-3.Require Gradle 4.9
+1. Require Mysql Ver 5.7.25 
+2. Require JAVA 8 
+3. Require Gradle 4.9
+
 
 ### Deploy
 
