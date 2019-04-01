@@ -16,7 +16,7 @@ Require Gradle 4.9
 
 ### API Documentation
 
-#### User SignUp 
+#### -User SignUp 
   curl -X POST \
   http://localhost:8085/wallet/signup \
   -H 'Content-Type: application/json' \
@@ -28,7 +28,7 @@ Require Gradle 4.9
 	"name":"Jatin Sokhal"
 }'
 
-#### User SignIn
+#### -User SignIn
 
 curl -X POST \
   http://localhost:8085/wallet/signin \
@@ -40,7 +40,7 @@ curl -X POST \
 	"password":"password23"
 }'
 
-#### Get User Details
+#### -Get User Details
 
 curl -X GET \
   http://localhost:8085/wallet/user \
@@ -48,7 +48,7 @@ curl -X GET \
   -H 'authorization: eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOjQsIm5hbWUiOiJKYXRpbiBTb2toYWxzIiwiZW1haWwiOiJqYXRpbi5zb2toYWw0QGdtYWlsLmNvbSIsImV4cCI6MTgwMCwiaWF0IjoxNTU0MTE1NTkzfQ.wLC7grao-c_A8EUWwUwNglNljw2b8HUWx7a2dM4d5BR_ZbLidumREMDhEc0DAU_QryRgcKoWu08smyaLLbXuNw' \
   -H 'cache-control: no-cache'
   
-#### Update User details ( only name and password can be updated ) 
+#### -Update User details ( only name and password can be updated ) 
 curl -X PUT \
   http://localhost:8085/wallet/user \
   -H 'Content-Type: application/json' \
@@ -60,7 +60,7 @@ curl -X PUT \
         "password":"password23"
     }'
     
-#### User Add money to wallet
+#### -User Add money to wallet
 
 curl -X POST \
   http://localhost:8085/wallet/user/transaction \
@@ -74,7 +74,7 @@ curl -X POST \
 	"type":"ADDED"
 }'
 
-#### User Add transfer money from wallet
+#### -User Add transfer money from wallet
 
 curl -X POST \
   http://localhost:8085/wallet/user/transaction \
@@ -88,7 +88,7 @@ curl -X POST \
 	"type":"TRANSFERED"
 }'
 
-#### View User Passbook
+#### -View User Passbook
 curl -X GET \
   http://localhost:8085/wallet/user/passbook \
   -H 'Postman-Token: 57f6225e-72e6-4dd1-b5d9-c07d5e304114' \
