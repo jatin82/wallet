@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import com.poc.wallet.repository.TransactionRepository;
 @Service
 public class TransactionService {
 	
+	private static final Logger log = LoggerFactory.getLogger(TransactionService.class);
+
 	@Autowired
 	private UserService userService;
 	
@@ -27,6 +31,7 @@ public class TransactionService {
 	
 	@Transactional
 	public synchronized Transaction executeTransaction(Transaction transaction) throws PlatformException {
+		log.debug("executeTransaction with {}",transaction);
 		if(transaction.getType().equals(TRANSACTION_TYPE.ADDED)) {
 			User recievingUser = userService.getUserByEmail(transaction.getRecievingUser().getEmail());
 
@@ -56,6 +61,7 @@ public class TransactionService {
 				userService.updateUser(payingUser);
 				transaction = transactionRepository.save(transaction);
 			}else {
+				log.error("Insufficient Balance for payingUser : {}",payingUser);
 				throw new PlatformException(HttpStatus.BAD_REQUEST, "Insufficient Balance");
 			}
 		}
@@ -64,6 +70,8 @@ public class TransactionService {
 
 	
 	public List<Passbook> getPassbook(User user){
+
+		log.debug("TransactionService getPassbook for user {}",user);
 		List<Transaction> transactions = transactionRepository.findByRecievingUserOrPayingUserOrderByTransactionDateAsc(user,user);
 		
 		List<Passbook> passbooks = new ArrayList<>();
@@ -89,6 +97,7 @@ public class TransactionService {
 			}
 			passbooks.add(passbook);
 		});
+		log.debug("TransactionService getPassbook fetched all passbooks {}",passbooks);
 		return passbooks;
 	}
 }

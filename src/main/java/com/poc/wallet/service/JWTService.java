@@ -37,6 +37,7 @@ public class JWTService {
                     .parseClaimsJws(token.getToken())
                     .getBody();
 
+            log.debug("parseAuthToken with claims {}",body);
             User user = new User();
             user.setUserId((Integer) body.get(Constants.USERID));
             user.setEmail((String) body.get(Constants.EMAIL));
@@ -70,32 +71,9 @@ public class JWTService {
                 .setExpiration(new Date(expireIn))
                 .setIssuedAt(new Date())
                 .compact());
+        
+        log.debug("generateAuthToken with User {}, token {}",user,token);
         token.setType(type);
         return token;
     }
-    
-    public String encryptToken(String key,String type) {
-        Claims claims = Jwts.claims();
-        claims.put(type, key);
-        return Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
-    }
-    
-    public String decryptToken(String token,String type) {
-    	try {
-            Claims body = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            String key = body.get(type).toString();
-            return key;
-        } catch (JwtException | ClassCastException e) {
-        	log.error("Cannot parse Token");
-        	throw e;
-        }
-    }
-
 }

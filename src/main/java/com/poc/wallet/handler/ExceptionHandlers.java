@@ -15,10 +15,10 @@ import com.poc.wallet.model.ResponseData;
 public class ExceptionHandlers {
 
 	private static final Logger log = LoggerFactory.getLogger(ExceptionHandlers.class);
-
 	
 	@ExceptionHandler(value = PlatformException.class)
 	public ResponseEntity<ResponseData<String>> handlePlatformException(PlatformException exception){
+		log.error("Got PlatformException : {}",exception);
 		ResponseData<String> response = new ResponseData<>();
 		response.setMessage(exception.getMessage());
 		return new ResponseEntity<ResponseData<String>>(response,exception.getStatus());
@@ -26,7 +26,7 @@ public class ExceptionHandlers {
 	
 	@ExceptionHandler(value = Exception.class)
 	public ResponseEntity<ResponseData<String>> handleException(Exception exception){
-		log.error("Exception : {}",exception);
+		log.error("Got Exception : {}",exception);
 		ResponseData<String> response = new ResponseData<>();
 		response.setMessage(exception.getMessage());
 		return new ResponseEntity<ResponseData<String>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -34,6 +34,7 @@ public class ExceptionHandlers {
 	
 	@ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
 	public ResponseEntity<ResponseData<String>> handleMethodNotFound(HttpRequestMethodNotSupportedException exception){
+		log.error("Got MethodNotFoundException : {}",exception);
 		ResponseData<String> response = new ResponseData<>();
 		response.setMessage(exception.getMessage());
 		return new ResponseEntity<ResponseData<String>>(response,HttpStatus.NOT_FOUND);
