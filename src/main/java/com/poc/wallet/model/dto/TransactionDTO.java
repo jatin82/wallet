@@ -1,18 +1,22 @@
 package com.poc.wallet.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.poc.wallet.model.TRANSACTION_TYPE;
 
 public class TransactionDTO {
 
 	
-	@JsonProperty(required = true)
+	@NotBlank
+	@NotNull
 	private String user;
 	
-	@JsonProperty(required = true)
+	@NotBlank
+	@NotNull
 	private long money;
 	
-	@JsonProperty(required = true)
+	@NotBlank
 	private TRANSACTION_TYPE type;
 	
 	public String getUser() {

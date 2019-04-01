@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -38,7 +39,14 @@ public class ExceptionHandlers {
 		ResponseData<String> response = new ResponseData<>();
 		response.setMessage(exception.getMessage());
 		return new ResponseEntity<ResponseData<String>>(response,HttpStatus.NOT_FOUND);
+	}
 	
+	@ExceptionHandler(value = MethodArgumentNotValidException.class)
+	public ResponseEntity<ResponseData<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception){
+		log.error("Got MethodArgumentNotValidException : {}",exception);
+		ResponseData<String> response = new ResponseData<>();
+		response.setMessage(exception.getMessage());
+		return new ResponseEntity<ResponseData<String>>(response,HttpStatus.BAD_REQUEST);
 	}
 }
 

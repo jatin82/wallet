@@ -21,5 +21,7 @@ public class Constants {
 	public static final String SUCCESS = "SUCCESS";
 	
 	public static final String FAILED = "FAILED";
+	
+	public static final String MISSING_DATA = "Missing required Data";
 
 }

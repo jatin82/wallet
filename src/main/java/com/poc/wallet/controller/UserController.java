@@ -108,7 +108,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/transaction")
-	public ResponseEntity<ResponseData<String>> transferMoney(HttpServletRequest request,@RequestBody TransactionDTO transactionDTO) throws PlatformException{
+	public ResponseEntity<ResponseData<String>> transferMoney(HttpServletRequest request,@RequestBody(required=true) TransactionDTO transactionDTO) throws PlatformException{
 		preProcessRequest(request);
 		Transaction transaction = processTransaction(transactionDTO);
 		transaction = transactionService.executeTransaction(transaction);

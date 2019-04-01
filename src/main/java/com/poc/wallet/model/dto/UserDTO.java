@@ -1,7 +1,10 @@
 package com.poc.wallet.model.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class UserDTO {
 	
+	@NotBlank
 	private String email;
 	
 	private String name;
