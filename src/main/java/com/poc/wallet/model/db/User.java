@@ -5,8 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.hibernate.validator.constraints.UniqueElements;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,13 +18,16 @@ public class User {
 	@Column(name="userId")
 	private int userId;
 	
+	@Column(unique = true, nullable = false)
 	private String email;
 	
 	@JsonIgnore
+	@Size(min = 8, message = "Minimum password length: 8 characters")
 	private String password;
 	
 	private long balance;
 	
+	@Size(min = 4, max = 255, message = "Minimum name length: 4 characters")
 	private String name;
 
 	public int getUserId() {
