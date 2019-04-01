@@ -27,7 +27,7 @@ public class JWTService {
     @Value("${jwt.secret.decoded}")
     private String secret;
     
-    @Value("${jwt.token.expire:1800000}") // 30 min token
+    @Value("${jwt.token.expire:10}") // 30 min token
     private long expireIn;
 
     public User parseAuthToken(Token token) {
@@ -37,7 +37,7 @@ public class JWTService {
                     .parseClaimsJws(token.getToken())
                     .getBody();
 
-            log.debug("parseAuthToken with claims {}",body);
+            log.debug("parseAuthToken with claims {}",body.values());
             User user = new User();
             user.setUserId((Integer) body.get(Constants.USERID));
             user.setEmail((String) body.get(Constants.EMAIL));
@@ -67,9 +67,9 @@ public class JWTService {
         Token token = new Token();
         token.setToken(Jwts.builder()
                 .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .setExpiration(new Date(expireIn))
+                .setExpiration(new Date(System.currentTimeMillis() + expireIn))
                 .setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact());
         
         log.debug("generateAuthToken with User {}, token {}",user,token);
